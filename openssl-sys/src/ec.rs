@@ -30,7 +30,11 @@ extern "C" {
         ctx: *mut BN_CTX,
     ) -> c_int;
 
+    pub fn EC_GROUP_set_curve_name(key: *mut EC_GROUP, nid: c_int);
+    pub fn EC_GROUP_get_curve_name(key: *const EC_GROUP) -> c_int;
+
     pub fn EC_GROUP_set_asn1_flag(key: *mut EC_GROUP, flag: c_int);
+
 
     pub fn EC_GROUP_get_curve_GFp(
         group: *const EC_GROUP,

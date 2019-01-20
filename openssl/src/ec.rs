@@ -227,6 +227,30 @@ impl EcGroupRef {
         }
     }
 
+    /// Set the Nid of the named curve
+    ///
+    /// OpenSSL documentation at [`EC_GROUP_set_curve_name`]
+    ///
+    /// [`EC_GROUP_set_curve_name`]: https://www.openssl.org/docs/man1.1.0/crypto/EC_GROUP_get_curve_name.html
+    pub fn set_curve_name(&mut self, nid: Nid) {
+        unsafe {
+            ffi::EC_GROUP_set_curve_name(self.as_ptr(), nid.as_raw());
+        }
+    }
+
+    /// Get the Nid of the named curve. If there is no curve name
+    /// associated, then None is returned.
+    ///
+    /// OpenSSL documentation at [`EC_GROUP_get_curve_name`]
+    ///
+    /// [`EC_GROUP_get_curve_name`]: https://www.openssl.org/docs/man1.1.0/crypto/EC_GROUP_get_curve_name.html
+    pub fn get_curve_name(&self) -> Option<Nid> {
+        match unsafe { ffi::EC_GROUP_get_curve_name(self.as_ptr()) } {
+            0 => None,
+            nid => Some(Nid::from_raw(nid))
+        }
+    }
+
     /// Sets the flag determining if the group corresponds to a named curve or must be explicitly
     /// parameterized.
     ///
